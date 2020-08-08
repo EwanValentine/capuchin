@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package leader;
+
+service LeaderAPI {
+  rpc Query (Request) returns (Response) {}
+}
+
+message Request {
+  string query = 1;
+}
+
+message Response {
+  string status = 1;
+}
+
