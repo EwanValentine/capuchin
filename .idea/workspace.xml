@@ -16,7 +16,10 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7883ea11-13fb-4bae-8da4-a9a586113088" name="Default Changelist" comment="" />
+    <list default="true" id="7883ea11-13fb-4bae-8da4-a9a586113088" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,5 +123,9 @@
       <screen x="-2560" y="-758" width="2560" height="1417" />
     </state>
     <state x="-1779" y="-411" key="SettingsEditor/-2560.-758.2560.1417/0.23.1751.1097@-2560.-758.2560.1417" timestamp="1596824336656" />
+    <state x="538" y="266" width="672" height="678" key="search.everywhere.popup" timestamp="1596899101351">
+      <screen x="0" y="23" width="1751" height="1097" />
+    </state>
+    <state x="538" y="266" width="672" height="678" key="search.everywhere.popup/0.23.1751.1097@0.23.1751.1097" timestamp="1596899101351" />
   </component>
 </project>
