@@ -186,6 +186,7 @@ impl ::protobuf::reflect::ProtobufValue for Request {
 pub struct Response {
     // message fields
     pub status: ::std::string::String,
+    pub data: ::std::vec::Vec<u8>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -227,6 +228,32 @@ impl Response {
     pub fn take_status(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.status, ::std::string::String::new())
     }
+
+    // bytes data = 2;
+
+
+    pub fn get_data(&self) -> &[u8] {
+        &self.data
+    }
+    pub fn clear_data(&mut self) {
+        self.data.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_data(&mut self, v: ::std::vec::Vec<u8>) {
+        self.data = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_data(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.data
+    }
+
+    // Take field
+    pub fn take_data(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.data, ::std::vec::Vec::new())
+    }
 }
 
 impl ::protobuf::Message for Response {
@@ -240,6 +267,9 @@ impl ::protobuf::Message for Response {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.status)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.data)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -256,6 +286,9 @@ impl ::protobuf::Message for Response {
         if !self.status.is_empty() {
             my_size += ::protobuf::rt::string_size(1, &self.status);
         }
+        if !self.data.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.data);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -264,6 +297,9 @@ impl ::protobuf::Message for Response {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if !self.status.is_empty() {
             os.write_string(1, &self.status)?;
+        }
+        if !self.data.is_empty() {
+            os.write_bytes(2, &self.data)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -308,6 +344,11 @@ impl ::protobuf::Message for Response {
                 |m: &Response| { &m.status },
                 |m: &mut Response| { &mut m.status },
             ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "data",
+                |m: &Response| { &m.data },
+                |m: &mut Response| { &mut m.data },
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Response>(
                 "Response",
                 fields,
@@ -325,6 +366,7 @@ impl ::protobuf::Message for Response {
 impl ::protobuf::Clear for Response {
     fn clear(&mut self) {
         self.status.clear();
+        self.data.clear();
         self.unknown_fields.clear();
     }
 }
@@ -343,9 +385,10 @@ impl ::protobuf::reflect::ProtobufValue for Response {
 
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\x12proto/leader.proto\x12\x06leader\"\x1f\n\x07Request\x12\x14\n\x05q\
-    uery\x18\x01\x20\x01(\tR\x05query\"\"\n\x08Response\x12\x16\n\x06status\
-    \x18\x01\x20\x01(\tR\x06status29\n\tLeaderAPI\x12,\n\x05Query\x12\x0f.le\
-    ader.Request\x1a\x10.leader.Response\"\0b\x06proto3\
+    uery\x18\x01\x20\x01(\tR\x05query\"6\n\x08Response\x12\x16\n\x06status\
+    \x18\x01\x20\x01(\tR\x06status\x12\x12\n\x04data\x18\x02\x20\x01(\x0cR\
+    \x04data29\n\tLeaderAPI\x12,\n\x05Query\x12\x0f.leader.Request\x1a\x10.l\
+    eader.Response\"\0b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

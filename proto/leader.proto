@@ -12,5 +12,5 @@ message Request {
 
 message Response {
   string status = 1;
+  bytes data = 2;
 }
-

@@ -1,42 +1,39 @@
 use arrow::util::pretty;
 
-use datafusion::error::Result;
 use datafusion::datasource::csv::CsvReadOptions;
 use datafusion::execution::context::ExecutionContext;
 
 use std::thread;
 use std::sync::{Arc, Mutex};
+use std::error::Error;
 
-use futures::stream::StreamExt;
-
-use grpc::Metadata;
-use grpc::ServerRequest;
-use grpc::ServerResponseSink;
 use grpc::ServerRequestSingle;
 use grpc::ServerHandlerContext;
 use grpc::ServerResponseUnarySink;
 
 mod leader;
+mod sync;
 
-use leader::leader_grpc;
 use crate::leader::leader_grpc::LeaderAPI;
-use std::ops::{Deref, DerefMut};
+use crate::sync::sync::S3Sync;
+
+use futures::executor::block_on;
 
 type QueryContext = datafusion::execution::context::ExecutionContext;
 
 struct LeaderAPIImpl {
-  ctx: Arc<Mutex<QueryContext>>
+  ctx: Arc<Mutex<QueryContext>>,
 }
 
-impl dyn LeaderAPI {
-  pub fn new_with_arrow(ctx: Arc<Mutex<QueryContext>>) -> LeaderAPIImpl {
+impl LeaderAPI {
+  fn new_with_arrow(ctx: Arc<Mutex<QueryContext>>) -> LeaderAPIImpl {
     LeaderAPIImpl{
       ctx,
     }
   }
 }
 
-impl LeaderAPI for LeaderAPIImpl{
+impl LeaderAPI for LeaderAPIImpl {
   fn query(
     &self,
     _o: ServerHandlerContext,
@@ -61,24 +58,31 @@ impl LeaderAPI for LeaderAPIImpl{
   }
 }
 
-fn main() {
+#[tokio::main]
+async fn main() -> std::result::Result<(), Box<dyn Error>> {
+  let s3_syncer = S3Sync::new();
+  s3_syncer.sync(&"data.csv", &"ewanstestdata").await.unwrap();
 
   let mut ctx = ExecutionContext::new();
   ctx.register_csv(
     "test",
-    "data/train.csv",
+    "data.csv",
     CsvReadOptions::new(),
   ).unwrap();
 
   let safe_ctx = Arc::new(Mutex::new(ctx));
   let svc = LeaderAPI::new_with_arrow(safe_ctx);
 
+  println!("Testing 123");
+
   let port = 50051;
   let mut server_builder = grpc::ServerBuilder::new_plain();
-  server_builder.http.set_addr(String::from("localhost"));
+  // server_builder.http.set_addr(&"127.0.0.1")?;
   server_builder.http.set_port(port);
   server_builder.add_service(leader::leader_grpc::LeaderAPIServer::new_service_def(svc));
-  
+ 
+  println!("Testing 456");
+
   let server = server_builder.build().expect("server");
 
   println!("server stared on addr {}", server.local_addr());

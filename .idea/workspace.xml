@@ -17,8 +17,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7883ea11-13fb-4bae-8da4-a9a586113088" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/node/source/lib.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node/client.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/node/client.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node/node.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/node/node.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/node/source/s3.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/node/source/s3.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +118,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="-1692" y="-300" key="IDE.errors.dialog" timestamp="1596824422178">

@@ -1,13 +1,9 @@
-use std::env;
-use std::thread;
-
 use futures::executor;
 
 mod leader;
 
-use leader::leader::{Request, Response};
+use leader::leader::{Request};
 use leader::leader_grpc;
-use crate::leader::leader_grpc::LeaderAPIClient;
 use grpc::ClientStubExt;
 
 fn main() {
