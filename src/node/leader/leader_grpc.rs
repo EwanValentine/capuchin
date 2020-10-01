@@ -22,7 +22,7 @@
 // server interface
 
 pub trait LeaderAPI {
-    fn query(&self, o: ::grpc::ServerHandlerContext, req: ::grpc::ServerRequestSingle<super::leader::Request>, resp: ::grpc::ServerResponseUnarySink<super::leader::Response>) -> ::grpc::Result<()>;
+    fn query(&self, o: ::grpc::ServerHandlerContext, req: ::grpc::ServerRequestSingle<super::leader::Request>, resp: ::grpc::ServerResponseSink<super::leader::Response>) -> ::grpc::Result<()>;
 }
 
 // client
@@ -40,14 +40,14 @@ impl ::grpc::ClientStub for LeaderAPIClient {
 }
 
 impl LeaderAPIClient {
-    pub fn query(&self, o: ::grpc::RequestOptions, req: super::leader::Request) -> ::grpc::SingleResponse<super::leader::Response> {
+    pub fn query(&self, o: ::grpc::RequestOptions, req: super::leader::Request) -> ::grpc::StreamingResponse<super::leader::Response> {
         let descriptor = ::grpc::rt::ArcOrStatic::Static(&::grpc::rt::MethodDescriptor {
             name: ::grpc::rt::StringOrStatic::Static("/leader.LeaderAPI/Query"),
-            streaming: ::grpc::rt::GrpcStreaming::Unary,
+            streaming: ::grpc::rt::GrpcStreaming::ServerStreaming,
             req_marshaller: ::grpc::rt::ArcOrStatic::Static(&::grpc_protobuf::MarshallerProtobuf),
             resp_marshaller: ::grpc::rt::ArcOrStatic::Static(&::grpc_protobuf::MarshallerProtobuf),
         });
-        self.grpc_client.call_unary(o, req, descriptor)
+        self.grpc_client.call_server_streaming(o, req, descriptor)
     }
 }
 
@@ -64,13 +64,13 @@ impl LeaderAPIServer {
                 ::grpc::rt::ServerMethod::new(
                     ::grpc::rt::ArcOrStatic::Static(&::grpc::rt::MethodDescriptor {
                         name: ::grpc::rt::StringOrStatic::Static("/leader.LeaderAPI/Query"),
-                        streaming: ::grpc::rt::GrpcStreaming::Unary,
+                        streaming: ::grpc::rt::GrpcStreaming::ServerStreaming,
                         req_marshaller: ::grpc::rt::ArcOrStatic::Static(&::grpc_protobuf::MarshallerProtobuf),
                         resp_marshaller: ::grpc::rt::ArcOrStatic::Static(&::grpc_protobuf::MarshallerProtobuf),
                     }),
                     {
                         let handler_copy = handler_arc.clone();
-                        ::grpc::rt::MethodHandlerUnary::new(move |ctx, req, resp| (*handler_copy).query(ctx, req, resp))
+                        ::grpc::rt::MethodHandlerServerStreaming::new(move |ctx, req, resp| (*handler_copy).query(ctx, req, resp))
                     },
                 ),
             ],

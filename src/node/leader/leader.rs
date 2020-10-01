@@ -387,8 +387,8 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \n\x12proto/leader.proto\x12\x06leader\"\x1f\n\x07Request\x12\x14\n\x05q\
     uery\x18\x01\x20\x01(\tR\x05query\"6\n\x08Response\x12\x16\n\x06status\
     \x18\x01\x20\x01(\tR\x06status\x12\x12\n\x04data\x18\x02\x20\x01(\x0cR\
-    \x04data29\n\tLeaderAPI\x12,\n\x05Query\x12\x0f.leader.Request\x1a\x10.l\
-    eader.Response\"\0b\x06proto3\
+    \x04data2;\n\tLeaderAPI\x12.\n\x05Query\x12\x0f.leader.Request\x1a\x10.l\
+    eader.Response\"\00\x01b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

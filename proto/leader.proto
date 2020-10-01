@@ -3,7 +3,7 @@ syntax = "proto3";
 package leader;
 
 service LeaderAPI {
-  rpc Query (Request) returns (Response) {}
+  rpc Query (Request) returns (stream Response) {}
 }
 
 message Request {
