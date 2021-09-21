@@ -28,6 +28,8 @@ Test dataset example:
 ```csv
 order_id,user_id,date
 abc123,abc123,2021-09-01
+def456,def123,2021-09-02
+abc123,abc123,2021-09-03
 ```
 
 Using `httpie` using the test data set.
