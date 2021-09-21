@@ -33,6 +33,7 @@ func (q *Query) Exec() (Results, error) {
 			return results, err
 		}
 
+		// If header row, get the name of each column and the column number
 		if count == 0 {
 			for key, value := range record {
 				for _, selector := range q.Select {
@@ -45,6 +46,7 @@ func (q *Query) Exec() (Results, error) {
 			continue
 		}
 
+		// If select has rows defined
 		if len(q.Select) > 0 {
 			var row Row
 
@@ -69,33 +71,39 @@ func (q *Query) Exec() (Results, error) {
 
 		// Where
 		if q.Where != "" {
-			// Split where clause into column and value
-			parts := strings.Split(q.Where, "=")
-
-			columnName := strings.TrimSpace(parts[0])
-			whereValue := strings.TrimSpace(parts[1])
-
-			for _, result := range tmpResults {
-				var filtered Row
-				for _, row := range result {
-					if row.Key == columnName && row.Value == whereValue {
-						filtered = append(filtered, row)
-					}
-				}
-
-				if len(filtered) > 0 {
-					results = append(results, filtered)
-				}
-			}
-
-			continue
+			tmpResults = q.where(results, tmpResults)
+			results = tmpResults
+		} else {
+			results = append(results, tmpResults...)
 		}
 
-		results = append(results, tmpResults...)
 		count++
 	}
 
 	return results, nil
+}
+
+func (q *Query) where(results, tmpResults Results) Results {
+	// Split where clause into column and value
+	parts := strings.Split(q.Where, "=")
+
+	columnName := strings.TrimSpace(parts[0])
+	whereValue := strings.TrimSpace(parts[1])
+
+	for _, result := range tmpResults {
+		var filtered Row
+		for _, row := range result {
+			if row.Key == columnName && row.Value == whereValue {
+				filtered = append(filtered, row)
+			}
+		}
+
+		if len(filtered) > 0 {
+			results = append(results, filtered)
+		}
+	}
+
+	return results
 }
 
 // Source - csv reader
