@@ -23,6 +23,13 @@ $ capuchin http // starts just the http server, pointless as it uses the gRPC se
 
 ## Query API
 
+Test dataset example:
+
+```csv
+order_id,user_id,date
+abc123,abc123,2021-09-01
+```
+
 Using `httpie` using the test data set.
 
 ```bash 
