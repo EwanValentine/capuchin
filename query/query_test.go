@@ -4,7 +4,6 @@ import (
 	"encoding/csv"
 	"log"
 	"os"
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -14,41 +13,85 @@ type testCase struct {
 	Name     string
 	Query    Query
 	File     string
-	Expected []Result
+	Expected Results
 }
 
 var (
-	testCases = []testCase{{
-		Name: "test where",
-		Query: Query{
-			Select: []string{"user_id"},
-			Where:  "user_id = abc123",
+	testCases = []testCase{
+		{
+			Name: "test where",
+			Query: Query{
+				Select: []string{"user_id"},
+				Where:  "user_id = abc123",
+			},
+			File: "test-data.csv",
+			Expected: Results{
+				Row{
+					{
+						Key:   "user_id",
+						Value: "abc123",
+					},
+				},
+				Row{
+					{
+						Key:   "user_id",
+						Value: "abc123",
+					},
+				},
+			},
 		},
-		File: "test-data.csv",
-		Expected: []Result{{
-			Key:   "user_id",
-			Value: "abc123",
-		}, {
-			Key:   "user_id",
-			Value: "abc123",
-		}},
-	}, {
-		Name: "test can return all if no where",
-		Query: Query{
-			Select: []string{"order_id", "user_id", "date"},
+		{
+			Name: "test can return all if no where",
+			Query: Query{
+				Select: []string{"order_id", "user_id", "date"},
+			},
+			File: "test-data.csv",
+			Expected: Results{
+				Row{
+					{
+						Key:   "order_id",
+						Value: "abc123",
+					},
+					{
+						Key:   "user_id",
+						Value: "abc123",
+					},
+					{
+						Key:   "date",
+						Value: "2021-09-01",
+					},
+				},
+				Row{
+					{
+						Key:   "order_id",
+						Value: "def456",
+					},
+					{
+						Key:   "user_id",
+						Value: "def123",
+					},
+					{
+						Key:   "date",
+						Value: "2021-09-02",
+					},
+				},
+				Row{
+					{
+						Key:   "order_id",
+						Value: "abc123",
+					},
+					{
+						Key:   "user_id",
+						Value: "abc123",
+					},
+					{
+						Key:   "date",
+						Value: "2021-09-03",
+					},
+				},
+			},
 		},
-		File: "test-data.csv",
-		Expected: []Result{{
-			Key:   "order_id",
-			Value: "abc123",
-		}, {
-			Key:   "user_id",
-			Value: "abc123",
-		}, {
-			Key:   "date",
-			Value: "2021-09-01",
-		}},
-	}}
+	}
 )
 
 func TestCases(t *testing.T) {
@@ -58,12 +101,11 @@ func TestCases(t *testing.T) {
 			log.Panic(err)
 		}
 
+		log.Println("==== Test: ", testCase.Name)
 		testCase.Query.Source(csv.NewReader(f))
 		actual, err := testCase.Query.Exec()
 		require.NoError(t, err)
-		if !reflect.DeepEqual(actual, testCase.Expected) {
-			t.Errorf("%s: expected %v, got %v", testCase.Name, testCase.Expected, actual)
-		}
+		require.Equal(t, testCase.Expected, actual)
 	}
 }
 

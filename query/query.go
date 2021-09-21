@@ -3,7 +3,6 @@ package query
 import (
 	"encoding/csv"
 	"io"
-	"log"
 	"strings"
 )
 
@@ -17,12 +16,13 @@ type Query struct {
 }
 
 // Exec query
-func (q *Query) Exec() ([]Result, error) {
+func (q *Query) Exec() (Results, error) {
 	count := 0
 	selectCols := map[string]int{}
-	results := []Result{}
+	results := Results{}
 	for {
-		tmpResults := []Result{}
+		// @todo - this is probably shit, see: https://stackoverflow.com/questions/67685288/how-to-filter-csv-file-into-columns-on-go
+		tmpResults := Results{}
 		record, err := q.reader.Read()
 
 		if err == io.EOF {
@@ -30,7 +30,7 @@ func (q *Query) Exec() ([]Result, error) {
 		}
 
 		if err != nil {
-			log.Panic(err)
+			return results, err
 		}
 
 		if count == 0 {
@@ -45,34 +45,53 @@ func (q *Query) Exec() ([]Result, error) {
 			continue
 		}
 
-		// Filter the columns
-		for key, value := range record {
-			for k, sel := range selectCols {
-				if key == sel {
-					tmpResults = append(tmpResults, Result{
-						Key:   k,
-						Value: value,
-					})
+		if len(q.Select) > 0 {
+			var row Row
+
+			// For each value in the record, or csv row
+			for key, value := range record {
+				// For each column number in the selected columns
+				for columnName, columnNumber := range selectCols {
+					if key == columnNumber {
+						row = append(row, Result{
+							Key:   columnName,
+							Value: value,
+						})
+					}
 				}
+			}
+
+			// If the row count is filled, add it to the results
+			if len(row) > 0 {
+				tmpResults = append(tmpResults, row)
 			}
 		}
 
 		// Where
 		if q.Where != "" {
-			parts := strings.Split(q.Where, " = ")
+			// Split where clause into column and value
+			parts := strings.Split(q.Where, "=")
 
-			col := parts[0]
-			v := parts[1]
+			columnName := strings.TrimSpace(parts[0])
+			whereValue := strings.TrimSpace(parts[1])
 
 			for _, result := range tmpResults {
-				if result.Key == col && result.Value == v {
-					results = append(results, result)
+				var filtered Row
+				for _, row := range result {
+					if row.Key == columnName && row.Value == whereValue {
+						filtered = append(filtered, row)
+					}
+				}
+
+				if len(filtered) > 0 {
+					results = append(results, filtered)
 				}
 			}
-		} else {
-			results = tmpResults
+
+			continue
 		}
 
+		results = append(results, tmpResults...)
 		count++
 	}
 
@@ -86,6 +105,12 @@ func (q *Query) Source(r *csv.Reader) *Query {
 }
 
 // Result -
+type Results []Row
+
+// Row -
+type Row []Result
+
+// Row -
 type Result struct {
 	Key   string      `json:"key"`
 	Value interface{} `json:"value"`
