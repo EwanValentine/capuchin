@@ -20,9 +20,9 @@ type Query struct {
 func (q *Query) Exec() ([]Result, error) {
 	count := 0
 	selectCols := map[string]int{}
-	tmpResults := []Result{}
 	results := []Result{}
 	for {
+		tmpResults := []Result{}
 		record, err := q.reader.Read()
 
 		if err == io.EOF {

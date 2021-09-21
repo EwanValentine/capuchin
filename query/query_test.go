@@ -28,6 +28,9 @@ var (
 		Expected: []Result{{
 			Key:   "user_id",
 			Value: "abc123",
+		}, {
+			Key:   "user_id",
+			Value: "abc123",
 		}},
 	}, {
 		Name: "test can return all if no where",
