@@ -4,7 +4,18 @@ Distributed CSV Query Engine
 
 Status: mostly nonsense
 
-## Example 
+
+## Commands 
+
+```
+$ capuchin start // starts both gRPC and HTTP proxy server
+$ capuchin grpc // starts just the gRPC server
+$ capuchin http // starts just the http server, pointless as it uses the gRPC server 
+```
+
+## Example (Library)
+
+Example using Capuchin as a library:
 
 ```golang 
 s := source.NewFileSource()
