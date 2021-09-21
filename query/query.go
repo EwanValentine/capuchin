@@ -87,6 +87,6 @@ func (q *Query) Source(r *csv.Reader) *Query {
 
 // Result -
 type Result struct {
-	Key   string
-	Value interface{}
+	Key   string      `json:"key"`
+	Value interface{} `json:"value"`
 }

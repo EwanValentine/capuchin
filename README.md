@@ -21,6 +21,14 @@ $ capuchin grpc // starts just the gRPC server
 $ capuchin http // starts just the http server, pointless as it uses the gRPC server 
 ```
 
+## Query API
+
+Using `httpie` using the test data set.
+
+```bash 
+$ http post localhost:9999/v1/query select:='["user_id"]' where="user_id = abc123" source="./query/test-data.csv"
+```
+
 ## Example (Library)
 
 Example using Capuchin as a library:

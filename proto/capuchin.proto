@@ -5,11 +5,13 @@ package proto;
 option go_package = "github.com/EwanValentine/capuchin/gen/go/proto";
 
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 
 service CapuchinQueryService {
   rpc Query(QueryRequest) returns (QueryResponse) {
     option (google.api.http) = {
-      get: "/v1/query"
+      post: "/v1/query"
+      body: "*"
     };
   }
 }
@@ -21,5 +23,5 @@ message QueryRequest {
 }
 
 message QueryResponse {
-  bytes result = 1;
+  repeated google.protobuf.Struct results = 1;
 }
