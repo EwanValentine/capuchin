@@ -18,6 +18,7 @@ func main() {
 		Select: []string{"user_id", "date"},
 		Where:  "user_id = abc123",
 	}
+
 	query.Source(fileSource)
 
 	results, err := query.Exec()

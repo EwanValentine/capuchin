@@ -80,8 +80,9 @@ func (q *Query) Exec() ([]Result, error) {
 }
 
 // Source - csv reader
-func (q *Query) Source(r *csv.Reader) {
+func (q *Query) Source(r *csv.Reader) *Query {
 	q.reader = r
+	return q
 }
 
 // Result -

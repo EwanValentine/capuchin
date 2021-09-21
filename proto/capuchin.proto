@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/EwanValentine/capuchin/gen/go/proto";
+
+import "google/api/annotations.proto";
+
+service CapuchinQueryService {
+  rpc Query(QueryRequest) returns (QueryResponse) {
+    option (google.api.http) = {
+      get: "/v1/query"
+    };
+  }
+}
+
+message QueryRequest {
+  repeated string select = 1;
+  string where = 2;
+  string source = 3;
+}
+
+message QueryResponse {
+  bytes result = 1;
+}
