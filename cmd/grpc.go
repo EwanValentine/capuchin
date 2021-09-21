@@ -1,6 +1,10 @@
 package cmd
 
 import (
+	"log"
+
+	"github.com/EwanValentine/capuchin/conf"
+	"github.com/EwanValentine/capuchin/grpc"
 	"github.com/spf13/cobra"
 )
 
@@ -11,6 +15,9 @@ func init() {
 var grpcServer = &cobra.Command{
 	Use: "grpc",
 	Run: func(cmd *cobra.Command, args []string) {
-		// server := grpc.NewServer()
+		c := conf.Load()
+		if err := grpc.NewServer(c); err != nil {
+			log.Fatal(err)
+		}
 	},
 }
