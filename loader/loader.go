@@ -46,5 +46,9 @@ func (l *Loader) Shard() error {
 
 	log.Println(shards)
 
+	// Each shard interval could be stored in something like Redis
+	// each node could be connected by etcd or some shit
+	// The shard interval or updates could be signalled to each node
+
 	return nil
 }
