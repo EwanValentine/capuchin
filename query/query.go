@@ -11,7 +11,9 @@ type Query struct {
 	// Select is a list of column names as strings
 	Select []string `json:"select"`
 	// Where is a SQL like where clause `col = abc-123`
-	Where  string `json:"where"`
+	Where string `json:"where"`
+	// Limit of rows returned
+	Limit  *int `json:"limit"`
 	reader *csv.Reader
 }
 
