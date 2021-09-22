@@ -91,7 +91,24 @@ var (
 				},
 			},
 		},
-	}
+	},
+	{
+		Name: "test limit",
+		Query: Query{
+			Select: []string{"user_id"},
+			Where:  "user_id = abc123",
+			Limit: 1,
+		},
+		File: "test-data.csv",
+		Expected: Results{
+			Row{
+				{
+					Key:   "user_id",
+					Value: "abc123",
+				},
+			},
+		},
+	},
 )
 
 func TestCases(t *testing.T) {
