@@ -20,6 +20,24 @@ func (q *Query) Exec() (Results, error) {
 	count := 0
 	selectCols := map[string]int{}
 	results := Results{}
+
+	record, err := q.reader.Read()
+	if err != nil {
+		return results, err
+	}
+
+	if err == io.EOF {
+		return results, nil
+	}
+
+	for key, value := range record {
+		for _, selector := range q.Select {
+			if value == selector {
+				selectCols[selector] = key
+			}
+		}
+	}
+
 	for {
 		// @todo - this is probably shit, see: https://stackoverflow.com/questions/67685288/how-to-filter-csv-file-into-columns-on-go
 		tmpResults := Results{}
@@ -31,19 +49,6 @@ func (q *Query) Exec() (Results, error) {
 
 		if err != nil {
 			return results, err
-		}
-
-		// If header row, get the name of each column and the column number
-		if count == 0 {
-			for key, value := range record {
-				for _, selector := range q.Select {
-					if value == selector {
-						selectCols[selector] = key
-					}
-				}
-			}
-			count++
-			continue
 		}
 
 		// If select has rows defined
