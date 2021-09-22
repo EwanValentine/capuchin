@@ -65,3 +65,9 @@ if err != nil {
 
 log.Println(results)
 ```
+
+## Data Management 
+
+1. Point your Capuchin cluster at your datalake, defining which column in your data is your date key. 
+2. The Capuchin nodes will create a shard, loading batches of the data into memory using a date range. For example node 0 will load 20190101 to 20190801 into memory using a sharding algorithm to automatically divide the data.
+3. 
