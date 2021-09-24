@@ -7,6 +7,7 @@
 package loader
 
 import (
+	"encoding/csv"
 	"log"
 
 	"github.com/EwanValentine/capuchin/cluster"
@@ -14,7 +15,7 @@ import (
 
 // DataSource -
 type DataSource interface {
-	Read(start, end int) ([]byte, error)
+	Read(start, end int) (*csv.Reader, error)
 	Write([]byte) error
 }
 
@@ -60,30 +61,10 @@ func (l *Loader) AssignShardID(shardID int) {
 	l.ShardID = shardID
 }
 
-// Shard splits the data by the date key, by the number of nodes in the network
-// and stores each shard in the data store. Each node then receives a message
-// to sync with the generated shards.
-//
-// Each shard interval could be stored in something like Redis
-// each node could be connected by etcd or some shit
-// The shard interval or updates could be signalled to each node
-
-// Should have a shard size, say if the raw data is 1m rows,
-// each shard should contain N number of rows. So if the shard size is
-// 100,000 then we need 10 nodes. Then the start and end dates from each
-// is stored along with the node's metadata in the service discovery stuff.
-//
-// So like... /nodes/1/20180101/20210910 - the shard size could just be the number
-// of nodes in the cluster. So if you deploy 10 nodes, then each will have
-// 100,000 rows assigned to it. These will then be loaded into memory, or something else.
-//
-// When the number of nodes changes, new start and end dates need to be calculated.
-//
-// When the data is changed, the new end date will need to be accounted for somehow...
-//
-// We need to make sure that only one node does the rebalancing, otherwise... fucking hell.
-// I guess each node as they're aware of which node they are, could just do their bit?
-// What if node 3 of 4 goes? Do we need to re-assign node numbers? Probably.
+// Shard takes the maximum start and end date of the entire raw data set,
+// it generates a sequence of periods, gets the start and end date for just
+// this nodes period. It then 'rebalances', which means it reloads the data
+// using the new start and end date for just this node.
 func (l *Loader) Shard(start, end int) {
 	l.Start = start
 	l.End = end

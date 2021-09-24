@@ -87,7 +87,7 @@ func (q *Query) Exec() (Results, error) {
 		count++
 
 		if q.Limit != nil {
-			if count >= *s.Limit {
+			if count >= *q.Limit {
 				break
 			}
 		}

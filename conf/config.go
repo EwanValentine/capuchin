@@ -24,6 +24,7 @@ func Load() *Config {
 
 // Config -
 type Config struct {
-	HostAddr string `env:"HOST_ADDR,default=:8080"`
-	GRPCAddr string `env:"GRPC_ADDR,default=:9090"`
+	HostAddr   string `env:"HOST_ADDR,default=:8080"`
+	GRPCAddr   string `env:"GRPC_ADDR,default=:9090"`
+	BrokerAddr string `env:"BROKER_ADDR,default=:2379"`
 }

@@ -3,8 +3,9 @@ module github.com/EwanValentine/capuchin
 go 1.16
 
 require (
-	github.com/coreos/etcd v2.3.8+incompatible // indirect
+	github.com/coreos/etcd v2.3.8+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
+	github.com/pkg/errors v0.8.1
 	github.com/sethvargo/go-envconfig v0.3.5
 	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0
