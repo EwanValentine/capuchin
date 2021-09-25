@@ -9,6 +9,7 @@ require (
 	github.com/sethvargo/go-envconfig v0.3.5
 	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0
+	github.com/syndtr/goleveldb v1.0.0 // indirect
 	go.etcd.io/etcd v2.3.8+incompatible
 	golang.org/x/net v0.0.0-20210917221730-978cfadd31cf // indirect
 	golang.org/x/sys v0.0.0-20210921065528-437939a70204 // indirect

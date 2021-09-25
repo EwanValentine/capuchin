@@ -1,6 +1,7 @@
 package loader
 
 import (
+	"encoding/csv"
 	"testing"
 	"time"
 
@@ -27,7 +28,7 @@ func (m *mockDataSource) Write(data []byte) error {
 	return nil
 }
 
-func (m *mockDataSource) Read(start, end int) ([]byte, error) {
+func (m *mockDataSource) Read(start, end int) (*csv.Reader, error) {
 	return nil, nil
 }
 
