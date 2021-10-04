@@ -16,7 +16,7 @@ import (
 // DataSource -
 type DataSource interface {
 	Read(start, end int) (*csv.Reader, error)
-	Write([]byte) error
+	Write(reader *csv.Reader) error
 }
 
 // DistributionManager -
@@ -54,6 +54,11 @@ func NewLoader(dataSource DataSource, distributionManager DistributionManager, s
 func (l *Loader) Load(start, end int) error {
 	l.DataSource.Read(start, end)
 	return nil
+}
+
+// Write -
+func (l *Loader) Write(reader *csv.Reader) error {
+	return l.DataSource.Write(reader)
 }
 
 // AssignShardID -

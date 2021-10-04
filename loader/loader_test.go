@@ -24,7 +24,7 @@ func (m *mockDistributionManager) NodeRemoved() <-chan cluster.Node {
 
 type mockDataSource struct{}
 
-func (m *mockDataSource) Write(data []byte) error {
+func (m *mockDataSource) Write(reader *csv.Reader) error {
 	return nil
 }
 
